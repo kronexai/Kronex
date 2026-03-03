@@ -1,22 +1,27 @@
-# Repository Analysis: Kronex
+# Kronex
 
-This repository was analyzed on March 3, 2026.
+Kronex provides tools and scripts for managing GPU-enabled infrastructure on Google Kubernetes Engine (GKE).
 
-## Overview
-The **Kronex** repository is currently in its initial, foundational state.
+## Features
+- **GKE L4 vGPU Provisioning**: Automated script for setting up GKE clusters with NVIDIA L4 GPUs using time-sharing (vGPU).
 
-## Current Contents
-The repository contains only the following file:
-- `LICENSE`: A standard MIT License file, which grants broad permissions for use, modification, and distribution.
+## Scripts
 
-## Technical Findings
-- **Source Code**: There is currently **no source code**, configuration files, or build scripts present in the repository.
-- **Git History**:
-    - The repository has a single commit: `72dc75e` titled "Initial commit".
-    - The commit was authored by `kronexai` on March 3, 2026.
-- **Repository Metadata**:
-    - **Remote URL**: `https://github.com/kronexai/Kronex`
-    - **Branches**: Only the `main` branch is populated.
+### `provision_gke_l4_vgpu.sh`
+This script automates the creation of a GKE cluster and a node pool with NVIDIA L4 GPUs. It supports GPU time-sharing by default.
 
-## Summary
-At present, this repository serves as a placeholder or a starting point for a new project. It is ready for the addition of source code and project documentation.
+#### Usage
+```bash
+export PROJECT_ID="your-project-id"
+./provision_gke_l4_vgpu.sh
+```
+
+#### Configuration
+You can override the following environment variables:
+- `CLUSTER_NAME`: Name of the GKE cluster (default: `vgpu-agent-sandbox`)
+- `ZONE`: Google Cloud zone (default: `us-central1-a`)
+- `ENABLE_TIME_SHARING`: Set to `false` for exclusive GPUs (default: `true`)
+- `MAX_SHARED_CLIENTS`: Maximum number of shared clients per GPU (default: `8`)
+
+## License
+MIT
