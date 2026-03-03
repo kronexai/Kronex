@@ -4,6 +4,7 @@ Kronex provides tools and scripts for managing GPU-enabled infrastructure on Goo
 
 ## Features
 - **GKE L4 vGPU Provisioning**: Automated script for setting up GKE clusters with NVIDIA L4 GPUs using time-sharing (vGPU).
+- **GPU Sharing Verification**: Tools to confirm and monitor real-time GPU sharing across multiple pods.
 
 ## Scripts
 
@@ -22,6 +23,29 @@ You can override the following environment variables:
 - `ZONE`: Google Cloud zone (default: `us-central1-a`)
 - `ENABLE_TIME_SHARING`: Set to `false` for exclusive GPUs (default: `true`)
 - `MAX_SHARED_CLIENTS`: Maximum number of shared clients per GPU (default: `8`)
+
+---
+
+### `verify_vgpu_sharing.sh`
+This script verifies that GPU time-sharing is working by deploying multiple pods that request the same GPU resource.
+
+#### Usage
+```bash
+./verify_vgpu_sharing.sh 8
+```
+
+#### What you will see
+1. **Pod Distribution**: All 8 pods will typically be scheduled on the same node (sharing the single L4 GPU).
+2. **GPU Memory Sharing**: When running `nvidia-smi` inside each pod:
+    - Every pod reports the full L4 capacity (e.g., 24 GB).
+    - `memory.used` is the cumulative total across all sharing pods.
+    - `nvidia-smi` lists separate CUDA processes for each pod.
+
+#### Live Monitoring
+To watch memory usage in real-time as pods start up:
+```bash
+kubectl exec gpu-debug-1 -- watch -n 2 nvidia-smi
+```
 
 ## License
 MIT
